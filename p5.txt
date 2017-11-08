@@ -117,36 +117,58 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 12. Vamos a ver más a fondo el intercambio RTP. En Telephony hay una opción RTP. Empecemos mirando los flujos RTP.
  ** ¿Cuántos flujos hay? ¿por qué?
+    Tenemos 2: Uno de audio y uno de video.
  ** ¿Cuántos paquetes se pierden?
+    Según las estadísticas no se pierde ningún paquete.
  ** ¿Cuál es el valor máximo del delta? ¿Y qué es lo que significa el valor de delta?
+    Flujo 1 -> 1290.48ms
+    Flujo 2 -> 1290.44ms
+    Es la diferencia de tiempos de llegada entre el paquete actual y el anterior.
  ** ¿Cuáles son los valores de jitter (medio y máximo)? ¿Qué quiere decir eso? ¿Estamos ante una conversación de calidad?
+    Flujo 1 -> máx : 183.10 ms | med : 153.24 ms
+    Flujo 2 -> máx : 119.64 ms | med : 42.50 ms
 
+    El jitter refleja el retardo máximo.
+    Dado que no son valores elevados, podemos sentenciar que son de calidad.
 
 13. Elige un paquete RTP de audio. Analiza el flujo de audio en Telephony -> RTP -> Stream Analysis.
  ** ¿Cuánto valen el delta y el jitter para el primer paquete que ha llegado?
+    Vale 0 para ambos casos.
  ** ¿Podemos saber si éste es el primer paquete que nos han enviado?
+    No, ya que los numeros de secuencia son aleatorios.
  ** Los valores de jitter son menores de 10ms hasta un paquete dado. ¿Cuál?
+    Hasta el paquete 247.
  ** ¿A qué se debe el cambio tan brusco del jitter?
+    A una reducción del ancho de banda.
  ** ¿Es comparable este cambio con el tiempo desde la recepción del paquete anterior? ¿Por qué?
+    Si, porque el valor de delta aumenta y en concordancia el del jitter.
+    Si hay variación de tiempos entre paquetes, esto se traduce en el cambio del jitter.
  ** ¿Cuál es la dependencia entre el tiempo transcurrido desde el paquete anterior y el valor de jitter?
-
+    Como se menciona en el apartado anterior, conforme aumenta el valor de la delta, aumenta el jitter en consonancia.
 
 14. En Telephony selecciona el menú VoIP calls. Verás que se lista la llamada de voz IP capturada en una ventana emergente. Selecciona esa llamada y pulsa el botón Graph.
  ** ¿Cuánto dura la conversación?
+    20.9 s
  ** ¿Cuáles son sus SSRC? ¿Por qué hay varios SSRCs? ¿Hay CSRCs?
-
+       SRCC1 : 0xbf4afdr7
+       SRCC2 : 0x43306582
 
 15. Identifica la trama donde se finaliza la conversación.
  ** ¿Qué método SIP se utiliza?
+    Se utiliza el método BYE.
  ** ¿En qué trama(s)?
+    Tramas 924, 925,927 y 933
  ** ¿Por qué crees que se envía varias veces?
+    Por que el servidor no se lo confirma con el 200 OK.
 
 
 16. Finalmente, se cierra la aplicación de VozIP.
  ** ¿Por qué aparece una instrucción SIP del tipo REGISTER?
+    Ya que el valor de conexión no se ha cumplido, se envia dicho register con valor Expires = 0, para que elimine la información del usuario.
  ** ¿En qué trama sucede esto?
+    Trama 952
  ** ¿En qué se diferencia con la instrucción que se utilizó con anterioridad (al principio de la sesión)?
-
+    En el tiempo de expiración.
 
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
