@@ -78,24 +78,38 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 9. Fijémonos en las tramas siguientes a la número 46:
  ** ¿Se registra con éxito en el primer intento?
+    No, lo sabemos porque se recibe un paquete con la instrucción 401 Unauthorized.
  ** ¿Cómo sabemos si el registro se ha realizado correctamente o no?
+    Se recibe un 200 OK.
  ** ¿Podrías identificar las diferencias entre el primer intento y el segundo de registro? (fíjate en el tamaño de los paquetes y mira a qué se debe el cambio)
+    En el primer paquete que se envia tiene menor tamaño que el segundo ya que se
+    incluye las cabeceras de Authorization.
  ** ¿Cuánto es el valor del tiempo de expiración de la sesión? Indica las unidades.
-
+    3600s
 
 10. Una vez registrados, podemos efectuar una llamada. Vamos a probar con el servicio de eco de Ekiga que nos permite comprobar si nos hemos conectado correctamente. El servicio de eco tiene la dirección sip:500@ekiga.net. Veamos el INVITE de cerca.
  ** ¿Puede verse el nombre del que efectúa la llamada, así como su dirección SIP?
+    Sim en el apartado From, vemos: "Gregorio Robles" sip:grex@ekiga.net
  ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está?
+    En formato SDP
  ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes?
+ El primer intento no, ya que recibe como respuesta una trama con la instrucción 407 Proxy Authentication Required. Muy diferente al segundo mensaje que recibe
+ un 200 OK.
  ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto?
-
+    Como ya se mencionó en preguntas anteriores, el tamaño de los archivos son distintos, siendo el primero mas pequeño, debido a que el segundo contiene información Proxy-Authorization.
 
 11. Una vez conectado, estudia el intercambio de tramas.
  ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos?
+    H.261 y RTP
  ** ¿Cuál es el tamaño de paquete de los mismos?
+    Los paquetes H.261 tienen distintos tamaños de paquetes, respecto a RTP que tiene un tamaño de 214 bytes.
  ** ¿Se utilizan bits de padding?
+    No, debido a Padding : False.
  ** ¿Cuál es la periodicidad de los paquetes que se envían?
+    H.261 -> 3600s
+    RTP -> Variable
  ** ¿Cuántos bits/segundo estamos enviando?
+    Se envía a 64Kb/s
 
 
 
